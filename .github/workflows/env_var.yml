@@ -21,7 +21,9 @@ jobs:
           echo "SHA:            $GITHUB_SHA"
           echo "Ref:            $GITHUB_REF" 
       - name: Set env
-        run: export OUTPUT_FILE_PATH=$(echo $GITHUB_WORKSPACE)/whoami.json 
+        run: echo "OUTPUT_FILE_PATH=$(echo $GITHUB_WORKSPACE)/whoami.json" 
+      - name: Test env
+        run: echo $OUTPUT_FILE_PATH
       - name: Print env
         run: printenv
 
