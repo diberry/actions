@@ -32,4 +32,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: whoami.zip
-          path: ${{GITHUB_WORKSPACE}}/temp/whoami.json
+          path: ${{env.GITHUB_WORKSPACE}}/whoami.json
