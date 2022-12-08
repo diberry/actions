@@ -19,8 +19,9 @@ jobs:
         with:
           github_personal_access_token: ${{ secrets.PAT }}
           query_type: 'org_repos'
-          save_to_file: 'true'
-          save_to_file_name: repos.json          
+          save_to_file: 'false'
+      - name: Send output to file
+        run: echo ${{ steps.repos.outputs.data }} >> repos.json      
       - name: List files
         id: list_files
         run: |
