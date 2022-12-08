@@ -19,13 +19,14 @@ jobs:
         with:
           github_personal_access_token: ${{ secrets.PAT }}
           query_type: 'org_repos'
-          save_to_file: 'false'
+          save_to_file: 'true'
+          save_to_file_name: '../repos.json'
           rate_limit_delay: 5000
-      - name: Send output to file
-        run: |
-          cat <<EOF
-          ${{ steps.repos.outputs.data }}
-          EOF  
+      # - name: Send output to file
+      #   run: |
+      #     cat <<EOF
+      #     ${{ steps.repos.outputs.data }}
+      #     EOF  
       - name: List files
         id: list_files
         run: |
