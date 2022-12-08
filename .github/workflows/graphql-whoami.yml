@@ -31,5 +31,5 @@ jobs:
       - name: Upload artiface
         uses: actions/upload-artifact@v3
         with:
-          name: whoami.json
-          path: ./
+          name: whoami.zip
+          path: ./whoami.json
