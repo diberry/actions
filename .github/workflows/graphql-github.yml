@@ -20,6 +20,7 @@ jobs:
           github_personal_access_token: ${{ secrets.PAT }}
           query_type: 'org_repos'
           save_to_file: 'false'
+          rate_limit_delay: 5000
       - name: Send output to file
         run: echo ${{ steps.repos.outputs.data }} >> repos.json      
       - name: List files
