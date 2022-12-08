@@ -1,0 +1,32 @@
+name: GraphQL - repos
+
+on: 
+  workflow_dispatch:
+
+jobs:
+  graphql:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    name: GraphQL data scrape repos
+    outputs:
+      output1: ${{ steps.repos.outputs.data }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3    
+      - name: Get data
+        id: repos
+        uses: dfberry/gh-action-graphql@v1.9
+        with:
+          github_personal_access_token: ${{ secrets.PAT }}
+          query_type: 'org_repos'
+          save_to_file: 'true'
+          save_to_file_name: repos.json          
+      - name: List files
+        id: list_files
+        run: |
+            pwd && ls -la 
+      - name: Upload artiface
+        uses: actions/upload-artifact@v3
+        with:
+          name: repos.json
+          path: ./
