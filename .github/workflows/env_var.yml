@@ -6,10 +6,10 @@ on:
 jobs:
   graphql:
     runs-on: ubuntu-latest
+    env: 
+      FILENAME: whoami.json
     timeout-minutes: 30
     name: GitHub action env var
-    outputs:
-      output1: ${{ steps.repos.outputs.data }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3    

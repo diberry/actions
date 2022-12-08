@@ -6,6 +6,8 @@ on:
 jobs:
   graphql:
     runs-on: ubuntu-latest
+    env: 
+      FILENAME: whoami.json
     timeout-minutes: 30
     name: GraphQL data scrape
     outputs:
@@ -13,21 +15,15 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3  
-      - name: Set env
-        run: export OUTPUT_FILE_PATH=$(echo $GITHUB_WORKSPACE)/whoami.json 
-      - name: Test env
-        run: echo ${{ env.OUTPUT_FILE_PATH }}
       - name: Who Am I
         id: whoami
-        uses: dfberry/gh-action-graphql@v1.12
+        uses: dfberry/gh-action-graphql@v1.13
         with:
           github_personal_access_token: ${{ secrets.PAT }}
           query_type: 'whoami'
           save_to_file: 'true'
           ## notice that the file is prepend to previous directory
-          save_to_file_name: "${{env.GITHUB_WORKSPACE}}/whoami.json"
-      # - name: View output
-      #   run: echo ${{ steps.whoami.outputs.data }} >> whoami.data.action.json  
+          save_to_file_name: whoami.json
       - name: List files
         id: list_files
         run: |
@@ -36,4 +32,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: whoami.zip
-          path: "${{env.GITHUB_WORKSPACE}}/whoami.json"
+          path: whoami.json
