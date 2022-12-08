@@ -14,9 +14,9 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3  
       - name: Set env
-        run: echo "OUTPUT_FILE_PATH=$(echo $GITHUB_WORKFLOW)/whoami.json" 
+        run: echo "OUTPUT_FILE_PATH=$(echo $GITHUB_WORKSPACE)/whoami.json" 
       - name: Test env
-        run: echo $OUTPUT_FILE_PATH 
+        run: echo "$OUTPUT_FILE_PATH" 
       - name: Who Am I
         id: whoami
         uses: dfberry/gh-action-graphql@v1.12
@@ -25,7 +25,7 @@ jobs:
           query_type: 'whoami'
           save_to_file: 'true'
           ## notice that the file is prepend to previous directory
-          save_to_file_name: $OUTPUT_FILE_PATH
+          save_to_file_name: ${{env.OUTPUT_FILE_PATH}}
       # - name: View output
       #   run: echo ${{ steps.whoami.outputs.data }} >> whoami.data.action.json  
       - name: List files
@@ -36,4 +36,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: whoami.zip
-          path: ${{env.GITHUB_WORKSPACE}}/whoami.json
+          path: ${{env.OUTPUT_FILE_PATH}}
