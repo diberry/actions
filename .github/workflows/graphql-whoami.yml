@@ -12,7 +12,10 @@ jobs:
       output1: ${{ steps.whoami.outputs.data }}
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3    
+        uses: actions/checkout@v3  
+      - name: Var check
+        run: |
+          echo "${{GITHUB_WORKSPACE}}/temp/whoami.json"  
       - name: Who Am I
         id: whoami
         uses: dfberry/gh-action-graphql@v1.12
@@ -21,7 +24,7 @@ jobs:
           query_type: 'whoami'
           save_to_file: 'true'
           ## notice that the file is prepend to previous directory
-          save_to_file_name: ${{GITHUB_WORKSPACE}}/temp/whoami.json  
+          save_to_file_name: $GITHUB_WORKFLOW/whoami.json  
       # - name: View output
       #   run: echo ${{ steps.whoami.outputs.data }} >> whoami.data.action.json  
       - name: List files
