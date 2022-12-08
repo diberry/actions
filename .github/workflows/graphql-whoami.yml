@@ -19,11 +19,11 @@ jobs:
         with:
           github_personal_access_token: ${{ secrets.PAT }}
           query_type: 'whoami'
-          save_to_file: 'false'
+          save_to_file: 'true'
           ## notice that the file is prepend to previous directory
-          save_to_file_name: whoami.data.action.json  
-      - name: View output
-        run: echo ${{ steps.whoami.outputs.data }} >> whoami.data.action.json  
+          save_to_file_name: ../whoami.json  
+      # - name: View output
+      #   run: echo ${{ steps.whoami.outputs.data }} >> whoami.data.action.json  
       - name: List files
         id: list_files
         run: |
@@ -31,5 +31,5 @@ jobs:
       - name: Upload artiface
         uses: actions/upload-artifact@v3
         with:
-          name: whoami.data.action.json
+          name: whoami.json
           path: ./
