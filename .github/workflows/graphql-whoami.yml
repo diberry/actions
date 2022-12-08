@@ -15,7 +15,7 @@ jobs:
         uses: actions/checkout@v3    
       - name: Who Am I
         id: whoami
-        uses: dfberry/gh-action-graphql@v1.9
+        uses: dfberry/gh-action-graphql@v1.11
         with:
           github_personal_access_token: ${{ secrets.PAT }}
           query_type: 'whoami'
