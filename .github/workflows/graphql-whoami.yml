@@ -12,7 +12,11 @@ jobs:
       output1: ${{ steps.whoami.outputs.data }}
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3   
+        uses: actions/checkout@v3  
+      - name: Set env
+        run: echo "OUTPUT_FILE_PATH=$(echo $GITHUB_WORKFLOW)/whoami.json" 
+      - name: Test env
+        run: echo $OUTPUT_FILE_PATH 
       - name: Who Am I
         id: whoami
         uses: dfberry/gh-action-graphql@v1.12
