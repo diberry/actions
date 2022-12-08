@@ -25,7 +25,7 @@ jobs:
           query_type: 'whoami'
           save_to_file: 'true'
           ## notice that the file is prepend to previous directory
-          save_to_file_name: ${{env.GITHUB_WORKFLOW}}/whoami.json"  
+          save_to_file_name: $OUTPUT_FILE_PATH
       # - name: View output
       #   run: echo ${{ steps.whoami.outputs.data }} >> whoami.data.action.json  
       - name: List files
