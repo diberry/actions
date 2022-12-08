@@ -8,19 +8,17 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     name: GraphQL data scrape repos
-    outputs:
-      output1: ${{ steps.repos.outputs.data }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3    
       - name: Get data
         id: repos
-        uses: dfberry/gh-action-graphql@v1.12
+        uses: dfberry/gh-action-graphql@v1.13
         with:
           github_personal_access_token: ${{ secrets.PAT }}
           query_type: 'org_repos'
           save_to_file: 'true'
-          save_to_file_name: '../repos.json'
+          save_to_file_name: repos.json
           rate_limit_delay: 5000
       # - name: Send output to file
       #   run: |
@@ -34,5 +32,5 @@ jobs:
       - name: Upload artiface
         uses: actions/upload-artifact@v3
         with:
-          name: repos.json
-          path: ./
+          name: repos.zip
+          path: repos.json
