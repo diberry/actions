@@ -20,15 +20,15 @@ jobs:
           github_personal_access_token: ${{ secrets.PAT }}
           query_type: 'whoami'
           save_to_file: 'true'
-          save_to_file_name: whoami.data.action.json
-      - name: Show file contents
-        id: show_file_contents
-        run: |
-            cat whoami.data.action.json         
+          save_to_file_name: ./whoami.data.action.json      
       - name: List files
         id: list_files
         run: |
             pwd && ls -la 
+      - name: Show file contents
+        id: show_file_contents
+        run: |
+            cat ./whoami.data.action.json   
       - name: Upload artiface
         uses: actions/upload-artifact@v3
         with:
