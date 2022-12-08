@@ -14,7 +14,7 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3  
       - name: Set env
-        run: echo "OUTPUT_FILE_PATH=$(echo $GITHUB_WORKSPACE)/whoami.json" 
+        run: export OUTPUT_FILE_PATH=$(echo $GITHUB_WORKSPACE)/whoami.json 
       - name: Test env
         run: echo ${{ env.OUTPUT_FILE_PATH }}
       - name: Who Am I
