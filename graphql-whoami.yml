@@ -1,0 +1,35 @@
+name: GraphQL - who am i
+
+on: 
+  workflow_dispatch:
+
+jobs:
+  graphql:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    name: GraphQL data scrape
+    outputs:
+      output1: ${{ steps.whoami.outputs.data }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3    
+      - name: Who Am I
+        id: whoami
+        uses: dfberry/gh-action-graphql@v1.9
+        with:
+          github_personal_access_token: ${{ secrets.PAT }}
+          query_type: 'whoami'
+          save_to_file: 'true'
+          save_to_file_name: whoami.data.action.json
+      - name: Create 3rd file
+        run: |
+          cat <<EOF > whoami.data3.json
+          ${{ steps.whoami.outputs.data }}
+      - name: Show file contents
+        id: show_file_contents
+        run: |
+            cat whoami.data3.json          
+      - name: List files
+        id: list_files
+        run: |
+            pwd && ls -la 
