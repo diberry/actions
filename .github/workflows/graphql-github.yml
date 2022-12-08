@@ -22,7 +22,10 @@ jobs:
           save_to_file: 'false'
           rate_limit_delay: 5000
       - name: Send output to file
-        run: echo ${{ steps.repos.outputs.data }} >> repos.json      
+        run: |
+          cat <<EOF
+          ${{ steps.repos.outputs.data }}
+          EOF  
       - name: List files
         id: list_files
         run: |
