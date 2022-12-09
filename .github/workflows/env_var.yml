@@ -5,7 +5,7 @@ on:
 
 env: 
   FILENAME: whoami.json
-  MYDATETIME: $(date +"%FT%H%M")
+  MYDATETIME: echo "$(date +"%FT%H%M")""
 
 jobs:
   graphql:
@@ -23,6 +23,7 @@ jobs:
           echo "Event:          $GITHUB_EVENT_NAME\n"
           echo "SHA:            $GITHUB_SHA\n"
           echo "Ref:            $GITHUB_REF\n" 
+          echo "My env var:     $MYDATETIME\n"
       - name: Set env
         run: echo "OUTPUT_FILE_PATH=$(echo $GITHUB_WORKSPACE)/whoami.json" 
       - name: Test env

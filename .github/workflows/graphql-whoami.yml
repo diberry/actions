@@ -4,8 +4,8 @@ on:
   workflow_dispatch:
 
 env:
-  FILENAME: whoami.json
-  MYDATETIME: echo '$(date +"%FT%H%M")''
+  FILENAMEANDPATH: echo '$(date +"%FT%H%M")-whoami.json'
+  MYDATETIME: echo '$(date +"%FT%H%M")'
   BLOBSTORAGECONTAINER: whoami
 
 jobs:
@@ -28,7 +28,7 @@ jobs:
           query_type: "whoami"
           save_to_file: "true"
           ## notice that the file is prepend to previous directory
-          save_to_file_name: whoami.json
+          save_to_file_name: echo "$FILENAMEANDPATH"
       - name: List files
         id: list_files
         run: |
@@ -39,11 +39,11 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: whoami.zip
-          path: whoami.json
+          path: echo "$FILENAMEANDPATH"
       - name: Upload to Blob Storage
         uses: fixpoint/azblob-upload-artifact@v4
         with:
           connection-string: ${{ secrets.BLOB_STORE_CONN_STRING }}
-          name: whoami.json
-          path: whoami.json
-          container: whoami
+          name: echo "$FILENAMEANDPATH" # artifact name
+          path: . # path to artifact
+          container: whoami # blob storage container name
