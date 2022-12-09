@@ -44,6 +44,6 @@ jobs:
         uses: fixpoint/azblob-upload-artifact@v4
         with:
           connection-string: ${{ secrets.BLOB_STORE_CONN_STRING }}
-          name: whoami.json.json
-          path: b-whoami.json
+          name: whoami.json
+          path: whoami.json
           container: whoami
