@@ -41,11 +41,11 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: ${{env.BLOBSTORAGECONTAINER}}.zip # name of artifact to create
-          path: ${{env.BLOBSTORAGECONTAINER}} # name of existing file/dir to add to artiface
+          path: ${{env.MY_DATE}}-${{env.FILENAME}} # name of existing file/dir to add to artiface
       - name: Upload to Blob Storage
         uses: fixpoint/azblob-upload-artifact@v4
         with:
           connection-string: ${{ secrets.BLOB_STORE_CONN_STRING }}
           name: ${{env.MY_DATE}}-${{env.FILENAME}} # artifact name
-          path: ${{env.MY_DATE}}-${{env.FILENAME}} # path to artifact - a dot means entire directory
-          container: ${{env.BLOBSTORAGECONTAINER}} # blob storage container name
+          path: ${{env.MY_DATE}} # path to artifact - a dot means entire directory
+          # container: ${{env.BLOBSTORAGECONTAINER}} # blob storage container name
