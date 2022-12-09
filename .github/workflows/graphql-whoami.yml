@@ -4,8 +4,8 @@ on:
   workflow_dispatch:
 
 env:
-  FILENAMEANDPATH: whoami12.json
-  BLOBSTORAGECONTAINER: whoami12
+  FILENAMEANDPATH: whoami13.json
+  BLOBSTORAGECONTAINER: whoami13
   TEMPDIR: temp
 
 jobs:
@@ -48,6 +48,6 @@ jobs:
         uses: fixpoint/azblob-upload-artifact@v4
         with:
           connection-string: ${{ secrets.BLOB_STORE_CONN_STRING }}
-          name: ./ # artifact name
+          name: . # artifact name
           path: ./${{env.TEMPDIR}}/${{env.MY_DATE}}-${{env.FILENAMEANDPATH}} # path to artifact - a dot means entire directory
           container: ${{env.BLOBSTORAGECONTAINER}} # blob storage container name
