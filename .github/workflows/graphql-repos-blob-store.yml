@@ -41,6 +41,6 @@ jobs:
         uses: fixpoint/azblob-upload-artifact@v4
         with:
           connection-string: ${{ secrets.BLOB_STORE_CONN_STRING }}
-          name: azure-samples-repos.json
+          name: $(date +"%FT%H%M")-azure-samples-repos.json
           path: repos.json
           container: repos-azure-samples
