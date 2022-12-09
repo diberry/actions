@@ -4,8 +4,8 @@ on:
   workflow_dispatch:
 
 env:
-  FILENAMEANDPATH: whoami8.json
-  BLOBSTORAGECONTAINER: whoami8
+  FILENAMEANDPATH: whoami9.json
+  BLOBSTORAGECONTAINER: whoami9
   TEMPDIR: temp
 
 jobs:
@@ -50,4 +50,4 @@ jobs:
           connection-string: ${{ secrets.BLOB_STORE_CONN_STRING }}
           name: ${{env.MY_DATE}}-${{env.FILENAMEANDPATH}} # artifact name
           path: ./${{env.TEMPDIR}} # path to artifact - a dot means entire directory
-          container: ${{env.BLOBSTORAGECONTAINER}} # blob storage container name
+          #container: ${{env.BLOBSTORAGECONTAINER}} # blob storage container name
