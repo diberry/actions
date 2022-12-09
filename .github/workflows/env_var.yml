@@ -5,7 +5,7 @@ on:
 
 env: 
   FILENAME: whoami.json
-  MYDATETIME: echo "$(date +"%FT%H%M")""
+  MYDATETIME: echo "$(date +"%FT%H%M")"
 
 jobs:
   graphql:
