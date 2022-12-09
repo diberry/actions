@@ -3,6 +3,11 @@ name: GraphQL - who am i
 on: 
   workflow_dispatch:
 
+env: 
+  FILENAME: whoami.json
+  MYDATETIME: $(date +"%FT%H%M")
+  BLOBSTORAGECONTAINER: whoami
+
 jobs:
   graphql:
     runs-on: ubuntu-latest
