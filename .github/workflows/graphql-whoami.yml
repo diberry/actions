@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
 
 env:
-  FILENAMEANDPATH: whoami13.json
-  BLOBSTORAGECONTAINER: whoami13
-  TEMPDIR: temp
+  FILENAMEANDPATH: whoami.json
+  BLOBSTORAGECONTAINER: github-graphql
+  TEMPDIR: whoami
 
 jobs:
   graphql:
@@ -48,6 +48,6 @@ jobs:
         uses: fixpoint/azblob-upload-artifact@v4
         with:
           connection-string: ${{ secrets.BLOB_STORE_CONN_STRING }}
-          name: . # artifact name
+          name: ./${{env.TEMPDIR}} # artifact name
           path: ./${{env.TEMPDIR}}/${{env.MY_DATE}}-${{env.FILENAMEANDPATH}} # path to artifact - a dot means entire directory
           container: ${{env.BLOBSTORAGECONTAINER}} # blob storage container name
