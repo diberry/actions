@@ -33,3 +33,9 @@ jobs:
         with:
           name: whoami.zip
           path: whoami.json
+      - name: Upload to Blob Storage
+        uses: fixpoint/azblob-upload-artifact@v4
+        with:
+          connection-string: ${{ secrets.BLOB_STORE_CONN_STRING }}
+          path: ${{ date +"%FT%H%M" }}-whoami.json
+          container: whoami        
