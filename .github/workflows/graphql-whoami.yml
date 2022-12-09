@@ -4,8 +4,8 @@ on:
   workflow_dispatch:
 
 env:
-  FILENAMEANDPATH: whoami3.json
-  BLOBSTORAGECONTAINER: whoami3
+  FILENAMEANDPATH: whoami4.json
+  BLOBSTORAGECONTAINER: whoami4
 
 jobs:
   graphql:
@@ -28,7 +28,7 @@ jobs:
           query_type: "whoami"
           save_to_file: "true"
           ## notice that the file is prepend to previous directory
-          save_to_file_name: ${{env.MY_DATE}}-${{env.FILENAME}}
+          save_to_file_name: ${{env.MY_DATE}}-${{env.FILENAMEANDPATH}}
       - name: List files
         id: list_files
         run: |
@@ -38,12 +38,12 @@ jobs:
       - name: Upload artiface
         uses: actions/upload-artifact@v3
         with:
-          name: ${{env.BLOBSTORAGECONTAINER}}.zip # name of artifact to create
-          path: ${{env.MY_DATE}}-${{env.FILENAME}} # name of existing file/dir to add to artiface
+          name: ${{env.MY_DATE}}-${{env.FILENAMEANDPATH}}.zip # name of artifact to create
+          path: ${{env.MY_DATE}}-${{env.FILENAMEANDPATH}} # name of existing file/dir to add to artiface
       - name: Upload to Blob Storage
         uses: fixpoint/azblob-upload-artifact@v4
         with:
           connection-string: ${{ secrets.BLOB_STORE_CONN_STRING }}
-          name: ${{env.MY_DATE}}-${{env.FILENAME}} # artifact name
-          path: ${{env.MY_DATE}}-${{env.FILENAME}} # path to artifact - a dot means entire directory
+          name: ${{env.MY_DATE}}-${{env.FILENAMEANDPATH}} # artifact name
+          path: ${{env.MY_DATE}}-${{env.FILENAMEANDPATH}} # path to artifact - a dot means entire directory
           container: ${{env.BLOBSTORAGECONTAINER}} # blob storage container name
