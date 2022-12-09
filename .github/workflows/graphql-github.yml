@@ -1,4 +1,4 @@
-name: GraphQL - repos
+name: GraphQL - test
 
 on: 
   workflow_dispatch:
