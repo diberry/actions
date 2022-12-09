@@ -4,8 +4,8 @@ on:
   workflow_dispatch:
 
 env:
-  FILENAMEANDPATH: whoami4.json
-  BLOBSTORAGECONTAINER: whoami4
+  FILENAMEANDPATH: whoami5.json
+  BLOBSTORAGECONTAINER: whoami5
 
 jobs:
   graphql:
@@ -45,5 +45,5 @@ jobs:
         with:
           connection-string: ${{ secrets.BLOB_STORE_CONN_STRING }}
           name: ${{env.MY_DATE}}-${{env.FILENAMEANDPATH}} # artifact name
-          path: ${{env.MY_DATE}}-${{env.FILENAMEANDPATH}} # path to artifact - a dot means entire directory
+          path: ./${{env.MY_DATE}}-${{env.FILENAMEANDPATH}} # path to artifact - a dot means entire directory
           container: ${{env.BLOBSTORAGECONTAINER}} # blob storage container name
