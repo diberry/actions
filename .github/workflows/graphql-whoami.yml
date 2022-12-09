@@ -5,7 +5,7 @@ on:
 
 env:
   FILENAMEANDPATH: whoami.json
-  BLOBSTORAGECONTAINER: whoami
+  BLOBSTORAGECONTAINER: whoami2
 
 jobs:
   graphql:
@@ -48,4 +48,4 @@ jobs:
           connection-string: ${{ secrets.BLOB_STORE_CONN_STRING }}
           name: ${{env.MY_DATE}}-${{env.FILENAME}} # artifact name
           path: ${{env.MY_DATE}} # path to artifact - a dot means entire directory
-          # container: ${{env.BLOBSTORAGECONTAINER}} # blob storage container name
+          container: ${{env.BLOBSTORAGECONTAINER}} # blob storage container name
