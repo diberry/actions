@@ -12,7 +12,13 @@ jobs:
     name: GraphQL data scrape repos
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3    
+        uses: actions/checkout@v3   
+      - name: Get current time
+        uses: josStorer/get-current-time@v2.0.2
+        id: current-time
+        with:
+          format: YYYYMMDD-HH
+          utcOffset: "+08:00" 
       - name: Get data
         id: repos
         uses: dfberry/gh-action-graphql@v1.13
@@ -37,3 +43,4 @@ jobs:
           connection-string: ${{ secrets.BLOB_STORE_CONN_STRING }}
           name: azure-samples-repos.json
           path: repos.json
+          container: repos-azure-samples

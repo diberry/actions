@@ -15,11 +15,11 @@ jobs:
         uses: actions/checkout@v3    
       - name: Var check
         run: |
-          echo "Workspace:      $GITHUB_WORKSPACE"
-          echo "Workflow name:  $GITHUB_WORKFLOW"
-          echo "Event:          $GITHUB_EVENT_NAME"
-          echo "SHA:            $GITHUB_SHA"
-          echo "Ref:            $GITHUB_REF" 
+          echo "Workspace:      $GITHUB_WORKSPACE\n"
+          echo "Workflow name:  $GITHUB_WORKFLOW\n"
+          echo "Event:          $GITHUB_EVENT_NAME\n"
+          echo "SHA:            $GITHUB_SHA\n"
+          echo "Ref:            $GITHUB_REF\n" 
       - name: Set env
         run: echo "OUTPUT_FILE_PATH=$(echo $GITHUB_WORKSPACE)/whoami.json" 
       - name: Test env
