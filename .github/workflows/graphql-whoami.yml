@@ -30,7 +30,7 @@ jobs:
           query_type: "whoami"
           save_to_file: "true"
           ## notice that the file is prepend to previous directory
-          save_to_file_name: echo "$FILENAMEANDPATH"
+          save_to_file_name: ${{env.MY_DATE}}-${{env.FILENAME}}
       - name: List files
         id: list_files
         run: |
@@ -40,12 +40,12 @@ jobs:
       - name: Upload artiface
         uses: actions/upload-artifact@v3
         with:
-          name: whoami.zip
-          path: $FILENAMEANDPATH
+          name: ${{env.BLOBSTORAGECONTAINER}}.zip # name of artifact to create
+          path: ${{env.BLOBSTORAGECONTAINER}} # name of existing file/dir to add to artiface
       - name: Upload to Blob Storage
         uses: fixpoint/azblob-upload-artifact@v4
         with:
           connection-string: ${{ secrets.BLOB_STORE_CONN_STRING }}
-          name: ${{env.MY_DATE}}-$FILENAMEANDPATH # artifact name
-          path: . # path to artifact
-          container: whoami # blob storage container name
+          name: ${{env.MY_DATE}}-${{env.FILENAME}} # artifact name
+          path: ${{env.MY_DATE}}-${{env.FILENAME}} # path to artifact - a dot means entire directory
+          container: ${{env.BLOBSTORAGECONTAINER}} # blob storage container name
