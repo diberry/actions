@@ -4,8 +4,9 @@ on:
   workflow_dispatch:
 
 env:
-  FILENAMEANDPATH: whoami6.json
-  BLOBSTORAGECONTAINER: whoami6
+  FILENAMEANDPATH: whoami8.json
+  BLOBSTORAGECONTAINER: whoami8
+  TEMPDIR: temp
 
 jobs:
   graphql:
@@ -19,7 +20,10 @@ jobs:
         uses: actions/checkout@v3
       - name: Set date in env
         run: |
-          echo "MY_DATE=$(date +"%FT%H%M")" >> $GITHUB_ENV              
+          echo "MY_DATE=$(date +"%FT%H%M")" >> $GITHUB_ENV  
+      - name: Make temporary directory
+        run: |
+          mkdir ${{env.TEMPDIR}}                      
       - name: Who Am I
         id: whoami
         uses: dfberry/gh-action-graphql@v1.13
@@ -28,7 +32,7 @@ jobs:
           query_type: "whoami"
           save_to_file: "true"
           ## notice that the file is prepend to previous directory
-          save_to_file_name: ./temp/${{env.MY_DATE}}-${{env.FILENAMEANDPATH}}
+          save_to_file_name: ./${{env.TEMPDIR}}/${{env.MY_DATE}}-${{env.FILENAMEANDPATH}}
       - name: List files
         id: list_files
         run: |
@@ -39,11 +43,11 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: ${{env.MY_DATE}}-${{env.FILENAMEANDPATH}}.zip # name of artifact to create
-          path: ./temp/${{env.MY_DATE}}-${{env.FILENAMEANDPATH}} # name of existing file/dir to add to artiface
+          path: ./${{env.TEMPDIR}}/${{env.MY_DATE}}-${{env.FILENAMEANDPATH}} # name of existing file/dir to add to artiface
       - name: Upload to Blob Storage
         uses: fixpoint/azblob-upload-artifact@v4
         with:
           connection-string: ${{ secrets.BLOB_STORE_CONN_STRING }}
           name: ${{env.MY_DATE}}-${{env.FILENAMEANDPATH}} # artifact name
-          path: ./temp # path to artifact - a dot means entire directory
+          path: ./${{env.TEMPDIR}} # path to artifact - a dot means entire directory
           container: ${{env.BLOBSTORAGECONTAINER}} # blob storage container name
