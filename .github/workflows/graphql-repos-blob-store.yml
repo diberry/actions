@@ -1,0 +1,39 @@
+name: GraphQL - repos to blob store
+
+on: 
+  workflow_dispatch:
+  schedule:
+    - cron: "0 8 * * *"
+
+jobs:
+  graphql:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    name: GraphQL data scrape repos
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3    
+      - name: Get data
+        id: repos
+        uses: dfberry/gh-action-graphql@v1.13
+        with:
+          github_personal_access_token: ${{ secrets.PAT }}
+          query_type: 'org_repos'
+          save_to_file: 'true'
+          save_to_file_name: repos.json
+          rate_limit_delay: 5000
+      # - name: Send output to file
+      #   run: |
+      #     cat <<EOF
+      #     ${{ steps.repos.outputs.data }}
+      #     EOF  
+      - name: List files
+        id: list_files
+        run: |
+            pwd && ls -la 
+      - name: Upload to Blob Storage
+        uses: fixpoint/azblob-upload-artifact@v4
+        with:
+          connection-string: ${{ secrets.BLOB_STORE_CONN_STRING }}
+          name: azure-samples-repos.json
+          path: repos.json
