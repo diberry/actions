@@ -4,8 +4,7 @@ on:
   workflow_dispatch:
 
 env:
-  FILENAMEANDPATH: echo '$(date +"%FT%H%M")-whoami.json'
-  MYDATETIME: echo '$(date +"%FT%H%M")'
+  FILENAMEANDPATH: whoami.json
   BLOBSTORAGECONTAINER: whoami
 
 jobs:
@@ -20,6 +19,9 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
+      - name: Set date in env
+        run: |
+          echo "MY_DATE=$(date +"%FT%H%M")" >> $GITHUB_ENV              
       - name: Who Am I
         id: whoami
         uses: dfberry/gh-action-graphql@v1.13
@@ -44,6 +46,6 @@ jobs:
         uses: fixpoint/azblob-upload-artifact@v4
         with:
           connection-string: ${{ secrets.BLOB_STORE_CONN_STRING }}
-          name: echo "$FILENAMEANDPATH" # artifact name
+          name: echo "${{env.MY_DATE}}-$FILENAMEANDPATH" # artifact name
           path: . # path to artifact
           container: whoami # blob storage container name
