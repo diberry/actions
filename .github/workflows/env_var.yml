@@ -3,11 +3,14 @@ name: GraphQL - env vars
 on: 
   workflow_dispatch:
 
+env: 
+  FILENAME: whoami.json
+  MYDATETIME: $(date +"%FT%H%M")
+
 jobs:
   graphql:
     runs-on: ubuntu-latest
-    env: 
-      FILENAME: whoami.json
+
     timeout-minutes: 30
     name: GitHub action env var
     steps:
@@ -42,5 +45,5 @@ jobs:
         run: echo $TIME $R_TIME $F_TIME $YEAR $DAY
       - name: Use date time 2 
         run: |
-          echo $(date +"%FT%H%M")-newfilename.txt
+          echo $MYDATETIME-$FILENAME
 
