@@ -42,5 +42,5 @@ jobs:
         run: echo $TIME $R_TIME $F_TIME $YEAR $DAY
       - name: Use date time 2 
         run: |
-          echo '$(date +"%FT%H%M")-newfilename.txt'
+          echo $(date +"%FT%H%M")-newfilename.txt
 
