@@ -5,7 +5,7 @@ on:
 
 env: 
   FILENAME: whoami.json
-  MYDATETIME: date +"%FT%H%M"
+  MYDATETIME: echo "$(date +"%FT%H%M")"
 
 jobs:
   graphql:
@@ -24,13 +24,16 @@ jobs:
           echo "SHA:            $GITHUB_SHA\n"
           echo "Ref:            $GITHUB_REF\n" 
           echo "My env var:     $MYDATETIME\n"
-      - name: Set env
+      - name: Set workspace in env
         run: echo "OUTPUT_FILE_PATH=$(echo $GITHUB_WORKSPACE)/whoami.json" 
+      - name: Test workspace in  env
+        run: echo $OUTPUT_FILE_PATH
       - name: Set date in env
         run: |
-          echo "MY_DATE=$(date +"%FT%H%M")" >> $GITHUB_ENV
-      - name: Test env
-        run: echo $OUTPUT_FILE_PATH
+          echo "MY_DATE=$(date +"%FT%H%M")" >> $GITHUB_ENV        
+      - name: Test date in  env 1
+        run: |
+          echo $MY_DATE
       - name: Print env
         run: printenv
       - name: Get current time
@@ -52,5 +55,5 @@ jobs:
           echo "${{env.MYDATETIME}}-${{env.FILENAME}}"
       - name: Use date time 3 
         run: |
-          "${{env.MYDATETIME}}-${{env.FILENAME}}"
+          "${{env.MY_DATE}}-${{env.FILENAME}}"
 
