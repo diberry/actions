@@ -33,6 +33,8 @@ jobs:
         id: list_files
         run: |
           pwd && ls -la
+      - name: Print env
+        run: printenv          
       - name: Upload artiface
         uses: actions/upload-artifact@v3
         with:
