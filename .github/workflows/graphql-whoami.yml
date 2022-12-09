@@ -41,11 +41,11 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: whoami.zip
-          path: echo "$FILENAMEANDPATH"
+          path: $FILENAMEANDPATH
       - name: Upload to Blob Storage
         uses: fixpoint/azblob-upload-artifact@v4
         with:
           connection-string: ${{ secrets.BLOB_STORE_CONN_STRING }}
-          name: echo "${{env.MY_DATE}}-$FILENAMEANDPATH" # artifact name
+          name: ${{env.MY_DATE}}-$FILENAMEANDPATH # artifact name
           path: . # path to artifact
           container: whoami # blob storage container name
