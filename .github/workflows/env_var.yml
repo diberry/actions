@@ -5,7 +5,7 @@ on:
 
 env: 
   FILENAME: whoami.json
-  MYDATETIME: echo "$(date +"%FT%H%M")"
+  MYDATETIME: $(date +"%FT%H%M")
 
 jobs:
   graphql:
@@ -52,8 +52,4 @@ jobs:
         run: echo $TIME $R_TIME $F_TIME $YEAR $DAY
       - name: Use date time 2 
         run: |
-          echo "${{env.MYDATETIME}}-${{env.FILENAME}}"
-      - name: Use date time 3 
-        run: |
-          "${{env.MY_DATE}}-${{env.FILENAME}}"
-
+          echo "${{env.MY_DATE}}-${{env.FILENAME}}"
