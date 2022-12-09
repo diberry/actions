@@ -24,7 +24,7 @@ jobs:
       - name: Make temporary directory
         run: |
           mkdir ${{env.TEMPDIR}}                      
-      - name: Who Am I
+      - name: Get GraphQL data - Who Am I
         id: whoami
         uses: dfberry/gh-action-graphql@v1.13
         with:
