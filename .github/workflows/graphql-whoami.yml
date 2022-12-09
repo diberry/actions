@@ -1,9 +1,9 @@
 name: GraphQL - who am i
 
-on: 
+on:
   workflow_dispatch:
 
-env: 
+env:
   FILENAME: whoami.json
   MYDATETIME: $(date +"%FT%H%M")
   BLOBSTORAGECONTAINER: whoami
@@ -11,7 +11,7 @@ env:
 jobs:
   graphql:
     runs-on: ubuntu-latest
-    env: 
+    env:
       FILENAME: whoami.json
     timeout-minutes: 30
     name: GraphQL data scrape
@@ -19,20 +19,20 @@ jobs:
       output1: ${{ steps.whoami.outputs.data }}
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3  
+        uses: actions/checkout@v3
       - name: Who Am I
         id: whoami
         uses: dfberry/gh-action-graphql@v1.13
         with:
           github_personal_access_token: ${{ secrets.PAT }}
-          query_type: 'whoami'
-          save_to_file: 'true'
+          query_type: "whoami"
+          save_to_file: "true"
           ## notice that the file is prepend to previous directory
           save_to_file_name: whoami.json
       - name: List files
         id: list_files
         run: |
-            pwd && ls -la 
+          pwd && ls -la
       - name: Upload artiface
         uses: actions/upload-artifact@v3
         with:
@@ -42,5 +42,5 @@ jobs:
         uses: fixpoint/azblob-upload-artifact@v4
         with:
           connection-string: ${{ secrets.BLOB_STORE_CONN_STRING }}
-          path: ${{ date +"%FT%H%M" }}-whoami.json
-          container: whoami        
+          path: ${{ env.MYDATETIME }}-${{env.FILENAME}}
+          container: ${{env.BLOBSTORAGECONTAINER}}

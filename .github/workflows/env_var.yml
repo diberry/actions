@@ -45,5 +45,5 @@ jobs:
         run: echo $TIME $R_TIME $F_TIME $YEAR $DAY
       - name: Use date time 2 
         run: |
-          echo $MYDATETIME-$FILENAME
+          echo "${{env.MYDATETIME}}-${{env.FILENAME}}"
 
