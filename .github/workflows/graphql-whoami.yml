@@ -16,6 +16,11 @@ jobs:
     outputs:
       output1: ${{ steps.whoami.outputs.data }}
     steps:
+      - uses: Azure/get-keyvault-secrets@v1
+        with:
+          keyvault: "ghkey" # name of key vault in Azure portal
+          secrets: 'serviceprincipal'  # comma separated list of secret keys to fetch from key vault 
+        id: blogstorageconnectionstring # ID for secrets that you will reference
       - name: Checkout repo
         uses: actions/checkout@v3
       - name: Set date in env
@@ -47,7 +52,7 @@ jobs:
       - name: Upload to Blob Storage
         uses: fixpoint/azblob-upload-artifact@v4
         with:
-          connection-string: ${{ secrets.BLOB_STORE_CONN_STRING }}
+          connection-string: ${{ secrets.blogstorageconnectionstring }}
           name: ${{env.TEMPDIR}} # artifact name
           path: ${{env.TEMPDIR}}/${{env.MY_DATE}}-${{env.FILENAMEANDPATH}} # path to artifact - a dot means entire directory
           container: ${{env.BLOBSTORAGECONTAINER}} # blob storage container name
