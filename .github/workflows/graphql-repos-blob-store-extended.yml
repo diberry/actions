@@ -2,7 +2,8 @@ name: GraphQL - repos to blob store extended
 
 on: 
   workflow_dispatch:
-
+  schedule:
+    - cron: "0 8 * * *"
 
 
 env:
@@ -43,7 +44,7 @@ jobs:
           save_to_file: 'true'
           save_to_file_name: ./${{env.TEMPDIR}}/${{env.MY_DATE}}-${{env.FILENAMEANDPATH}}
           rate_limit_delay: 5000
-          max_page_size: 10
+          max_page_size: 50
       # DATA IS TOO LARGE - DON'T USE THIS
       # - name: Send output to file
       #   run: |
@@ -67,4 +68,4 @@ jobs:
           connection-string: ${{ steps.azure_keyvault_secrets.outputs.github-blobstorage-connection-string }}
           name: ${{env.TEMPDIR}} # artifact name
           path: ${{env.TEMPDIR}}/${{env.MY_DATE}}-${{env.FILENAMEANDPATH}} # path to artifact - a dot means entire directory
-          container: test-${{env.BLOBSTORAGECONTAINER}} # blob storage container name
+          container: extended-${{env.BLOBSTORAGECONTAINER}} # blob storage container name
