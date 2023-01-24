@@ -1,0 +1,69 @@
+name: GraphQL - repos to blob store
+
+on: 
+  workflow_dispatch:
+  schedule:
+    - cron: "0 8 * * *"
+
+env:
+  FILENAMEANDPATH: azure-samples.json
+  BLOBSTORAGECONTAINER: github-graphql
+  TEMPDIR: org_repos
+
+jobs:
+  graphql:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    name: GraphQL data scrape repos
+    outputs:
+      output1: ${{ steps.org_repos.outputs.data }}    
+    steps:
+      - uses: actions/checkout@master
+      - uses: Azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }} # Define secret variable in repository settings as per action documentation
+      - name: Get Key Vault Secret
+        uses: Azure/get-keyvault-secrets@v1
+        with:
+          keyvault: "ghkey" # name of key vault in Azure portal
+          secrets: 'serviceprincipal,github-blobstorage-connection-string'  # comma separated list of secret keys to fetch from key vault 
+        id: azure_keyvault_secrets # ID for secrets that you will reference
+      - name: Set date in env
+        run: |
+          echo "MY_DATE=$(date +"%FT%H%M")" >> $GITHUB_ENV  
+      - name: Make temporary directory
+        run: |
+          mkdir ${{env.TEMPDIR}}                    
+      - name: Get GraphQL data - org repos extended - Azure samples
+        id: org_repos
+        uses: dfberry/gh-action-graphql@v1.13
+        with:
+          github_personal_access_token: ${{ secrets.PAT }}
+          query_type: 'org_repos_extended'
+          save_to_file: 'true'
+          save_to_file_name: ./${{env.TEMPDIR}}/${{env.MY_DATE}}-${{env.FILENAMEANDPATH}}
+          rate_limit_delay: 5000
+      # DATA IS TOO LARGE - DON'T USE THIS
+      # - name: Send output to file
+      #   run: |
+      #     cat <<EOF
+      #     ${{ steps.repos.outputs.data }}
+      #     EOF  
+      - name: List files
+        id: list_files
+        run: |
+            pwd && ls -la 
+      - name: Print env
+        run: printenv     
+      - name: Upload artiface
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{env.MY_DATE}}-${{env.FILENAMEANDPATH}}.zip # name of artifact to create
+          path: ./${{env.TEMPDIR}}/${{env.MY_DATE}}-${{env.FILENAMEANDPATH}} # name of existing file/dir to add to artiface                 
+      - name: Upload to Blob Storage
+        uses: fixpoint/azblob-upload-artifact@v4
+        with:
+          connection-string: ${{ steps.azure_keyvault_secrets.outputs.github-blobstorage-connection-string }}
+          name: ${{env.TEMPDIR}} # artifact name
+          path: ${{env.TEMPDIR}}/${{env.MY_DATE}}-${{env.FILENAMEANDPATH}} # path to artifact - a dot means entire directory
+          container: test-${{env.BLOBSTORAGECONTAINER}} # blob storage container name
