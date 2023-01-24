@@ -2,8 +2,8 @@ name: GraphQL - repos to blob store extended
 
 on: 
   workflow_dispatch:
-  schedule:
-    - cron: "0 8 * * *"
+
+
 
 env:
   FILENAMEANDPATH: azure-samples.json
@@ -36,7 +36,7 @@ jobs:
           mkdir ${{env.TEMPDIR}}                    
       - name: Get GraphQL data - org repos extended - Azure samples
         id: org_repos
-        uses: dfberry/gh-action-graphql@v1.13
+        uses: dfberry/gh-action-graphql@v1.14.1
         with:
           github_personal_access_token: ${{ secrets.PAT }}
           query_type: 'org_repos_extended'
