@@ -2,9 +2,6 @@ name: GraphQL - repos to blob store extended
 
 on: 
   workflow_dispatch:
-  schedule:
-    - cron: "0 8 * * *"
-
 
 env:
   FILENAMEANDPATH: azure-samples.json
