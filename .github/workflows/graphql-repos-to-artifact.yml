@@ -1,4 +1,4 @@
-name: GraphQL - test
+name: GraphQL - org_repos to artifact
 
 on: 
   workflow_dispatch:
