@@ -1,4 +1,4 @@
-name: GraphQL - repos to blob store
+name: GraphQL - (nightly) repos to blob store
 
 on: 
   workflow_dispatch:
