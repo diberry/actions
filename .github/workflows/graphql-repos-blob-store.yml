@@ -36,14 +36,14 @@ jobs:
           mkdir ${{env.TEMPDIR}}                    
       - name: Get GraphQL data - org repos - Azure samples
         id: org_repos
-        uses: dfberry/gh-action-graphql@v1.14.6
+        uses: dfberry/gh-action-graphql@v1.14.7
         with:
           github_personal_access_token: ${{ secrets.PAT }}
           query_type: 'org_repos_extended'
           save_to_file: 'true'
           save_to_file_name: ./${{env.TEMPDIR}}/${{env.MY_DATE}}-${{env.FILENAMEANDPATH}}
           rate_limit_delay: 5000
-          max_page_size: 50
+          max_page_size: 40
           max_items: -1 # all rows
       # DATA IS TOO LARGE - DON'T USE THIS
       # - name: Send output to file
