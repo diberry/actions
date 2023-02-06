@@ -34,7 +34,7 @@ jobs:
           mkdir ${{env.TEMPDIR}}                    
       - name: Get GraphQL data - org repos extended - Azure samples
         id: org_repos
-        uses: dfberry/gh-action-graphql@v1.14.3
+        uses: dfberry/gh-action-graphql@v1.15.0
         with:
           github_personal_access_token: ${{ secrets.PAT }}
           query_type: 'org_repos_extended'
