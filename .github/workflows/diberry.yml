@@ -1,4 +1,4 @@
-name: GraphQL - diberry repos
+name: GraphQL - diberry repos stage
 
 on: 
   workflow_dispatch:
