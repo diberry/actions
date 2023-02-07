@@ -43,7 +43,7 @@ jobs:
           save_to_file: 'true'
           save_to_file_name: ./${{env.TEMPDIR}}/${{env.MY_DATE}}-${{env.FILENAMEANDPATH}}
           rate_limit_delay: 5000
-          max_page_size: 40
+          max_page_size: 30
           max_items: -1 # all rows
       # DATA IS TOO LARGE - DON'T USE THIS
       # - name: Send output to file
