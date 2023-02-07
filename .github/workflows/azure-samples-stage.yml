@@ -60,3 +60,10 @@ jobs:
         with:
           name: ${{env.MY_DATE}}-${{env.FILENAMEANDPATH}}.zip # name of artifact to create
           path: ./${{env.TEMPDIR}}/${{env.MY_DATE}}-${{env.FILENAMEANDPATH}} # name of existing file/dir to add to artiface                 
+      - name: Upload to Blob Storage
+        uses: fixpoint/azblob-upload-artifact@v4
+        with:
+          connection-string: ${{ steps.azure_keyvault_secrets.outputs.github-blobstorage-connection-string }}
+          name: ${{env.TEMPDIR}} # artifact name
+          path: ${{env.TEMPDIR}}/${{env.MY_DATE}}-${{env.FILENAMEANDPATH}} # path to artifact - a dot means entire directory
+          container: ${{env.BLOBSTORAGECONTAINER}} # blob storage container name
