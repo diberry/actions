@@ -11,10 +11,10 @@ env:
   TEMPDIR: org_repos
 
 jobs:
-  graphql-1.14.9:
+  graphql:
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    name: GraphQL data scrape repos
+    name: GraphQL data scrape repos 1.14.9
     outputs:
       output1: ${{ steps.org_repos.outputs.data }}    
     steps:
