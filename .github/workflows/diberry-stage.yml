@@ -38,6 +38,7 @@ jobs:
         with:
           github_personal_access_token: ${{ secrets.PAT }}
           query_type: 'org_repos_extended'
+          github_org: 'diberry'
           save_to_file: 'true'
           save_to_file_name: ./${{env.TEMPDIR}}/${{env.MY_DATE}}-${{env.FILENAMEANDPATH}}
           rate_limit_delay: 5000
