@@ -2,10 +2,11 @@ name: GraphQL nightly stage v1.15.1
 
 on: 
   workflow_dispatch:
-
+  schedule:
+    - cron: "0 8 * * *"
 env:
   FILENAMEANDPATH: azure-samples-stage.json
-  BLOBSTORAGECONTAINER: github-graphql-stage
+  BLOBSTORAGECONTAINER: github-graphql-test
   TEMPDIR: org_repos
 
 jobs:
