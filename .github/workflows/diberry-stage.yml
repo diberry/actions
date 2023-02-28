@@ -34,10 +34,11 @@ jobs:
           mkdir ${{env.TEMPDIR}}                    
       - name: Get GraphQL data - org repos extended - diberry
         id: org_repos_extended
-        uses: dfberry/gh-action-graphql@v1.15.1
+        uses: dfberry/gh-action-graphql@v1.16.2
         with:
           github_personal_access_token: ${{ secrets.PAT }}
-          query_type: 'org_repos_extended'
+          query_type: 'user_repos_extended'
+          repoOwnerType: 'user'
           github_org: 'diberry'
           save_to_file: 'true'
           save_to_file_name: ./${{env.TEMPDIR}}/${{env.MY_DATE}}-${{env.FILENAMEANDPATH}}
