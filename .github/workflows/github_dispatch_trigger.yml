@@ -1,0 +1,21 @@
+name: Workflow dispatch
+
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types:
+      - happy-webhook-trigger
+
+env:
+  ABC: 123
+
+jobs:
+  dosomething_job:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    name: Debug
+    steps:
+      - uses: actions/checkout@master
+      - name: Echo
+        run: |
+          echo "debugging webhook" 
