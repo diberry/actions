@@ -34,11 +34,9 @@ jobs:
         with:
           name: ${{env.MY_DATE}}-${{env.FILENAMEANDPATH}}.zip # name of artifact to create
           path: ./test-1.json # name of existing file/dir to add to artiface                 
-      - uses: bacongobbler/azure-blob-storage-upload@main
+      - name: Azure CLI script
+        uses: azure/CLI@v1
         with:
-          source_dir: ./${{env.MY_DATE}}-${{env.FILENAMEANDPATH}}.zip # path to artifact - a dot means entire directory
-          container_name: ${{env.BLOBSTORAGECONTAINER}}
-          connection_string: ${{ steps.azure_keyvault_secrets.outputs.github-blobstorage-connection-string }}
-          #extra_args: '--metadata project=123'
-          # WARNING: this will overwrite existing blobs in your blob storage
-          overwrite: 'true'      
+          azcliversion: 2.30.0
+          inlineScript: |
+            az storage file upload --connection-string ${{ steps.azure_keyvault_secrets.outputs.github-blobstorage-connection-string }} --metadata a=b --source ./test-1.json
