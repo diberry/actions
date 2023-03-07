@@ -39,4 +39,4 @@ jobs:
         with:
           azcliversion: 2.30.0
           inlineScript: |
-            az storage file upload --source ./test-1.json --share test --connection-string ${{ secrets.BLOB_STORE_CONN_STRING }} 
+            az storage blob upload --file ./test-1.json --container-name test --connection-string "${{ secrets.BLOB_STORE_CONN_STRING }}" 
