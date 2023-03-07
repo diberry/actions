@@ -1,0 +1,44 @@
+name: Blob batch storage
+
+on: 
+  workflow_dispatch:
+
+env:
+  FILENAMEANDPATH: blob-batch-upload-az-cli-1.json
+  BLOBSTORAGECONTAINER: test-batch
+
+
+jobs:
+  graphql:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    name: Blob batch storage
+    outputs:
+      output1: ${{ steps.org_repos.outputs.data }}    
+    steps:
+      - uses: actions/checkout@master
+      - uses: Azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }} # Define secret variable in repository settings as per action documentation
+      - name: Get Key Vault Secret
+        uses: Azure/get-keyvault-secrets@v1
+        with:
+          keyvault: "ghkey" # name of key vault in Azure portal
+          secrets: 'serviceprincipal,github-blobstorage-connection-string'  # comma separated list of secret keys to fetch from key vault 
+        id: azure_keyvault_secrets # ID for secrets that you will reference
+      - name: Set date in env
+        run: |
+          echo "MY_DATE=$(date +"%FT%H%M")" >> $GITHUB_ENV  
+          ls -la
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{env.MY_DATE}}-${{env.FILENAMEANDPATH}} # name of artifact to create
+          path: /temp/ # name of existing file/dir to add to artifact                
+      # tags aren't supported for hierarchical blob storage yet
+      # either upload with tags to non-hier, then process into hier or don't rely on tags for faster fetches
+      - name: Azure CLI script
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az storage blob upload-batch --container-name "${{env.BLOBSTORAGECONTAINER}}" -n "${{env.MY_DATE}}-${{env.FILENAMEANDPATH}}-blob-batch" --connection-string "${{ secrets.BLOB_STORE_CONN_STRING }}" --metadata process=mongo 
