@@ -41,4 +41,4 @@ jobs:
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            az storage blob upload-batch --source "./temp/" --destination "${{env.BLOBSTORAGECONTAINER}}" --destination-path "${{env.MY_DATE}}-${{env.FILENAMEANDPATH}}" -n "${{env.MY_DATE}}-${{env.FILENAMEANDPATH}}-blob-batch" --connection-string "${{ secrets.BLOB_STORE_CONN_STRING }}" --metadata process=mongo --overwrite 
+            az storage blob upload-batch --source "./temp/" --destination "${{env.BLOBSTORAGECONTAINER}}" --destination-path "${{env.MY_DATE}}-${{env.FILENAMEANDPATH}}"  --connection-string "${{ secrets.BLOB_STORE_CONN_STRING }}" --metadata process=mongo --overwrite 
