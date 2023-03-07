@@ -29,6 +29,7 @@ jobs:
       - name: Set date in env
         run: |
           echo "MY_DATE=$(date +"%FT%H%M")" >> $GITHUB_ENV  
+          echo "$AZURE_STORAGE_CONNECTION_STRING"={{serviceprincipal,github-blobstorage-connection-string}} >> $GITHUB_ENV  
       - name: Upload artifate
         uses: actions/upload-artifact@v3
         with:
@@ -39,4 +40,4 @@ jobs:
         with:
           azcliversion: 2.30.0
           inlineScript: |
-            az storage file upload --source ./test-1.json --share test --connection-string ${{ steps.azure_keyvault_secrets.outputs.github-blobstorage-connection-string }} --metadata a=b 
+            az storage file upload --source ./test-1.json --share test
