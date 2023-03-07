@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
 
 env:
-  FILENAMEANDPATH: azure-samples.json
-  BLOBSTORAGECONTAINER: blob-upload
-  TEMPDIR: test
+  FILENAMEANDPATH: blob-upload-az-cli.json
+  BLOBSTORAGECONTAINER: test
+
 
 jobs:
   graphql:
@@ -29,14 +29,16 @@ jobs:
       - name: Set date in env
         run: |
           echo "MY_DATE=$(date +"%FT%H%M")" >> $GITHUB_ENV  
+          json='{"commit_id": "b8f2b8b", "environment": "test", "tags_at_commit": "sometags", "project": "someproject", "current_date": "09/10/2014", "version": "someversion"}'
+          echo "$json" > ${{env.MY_DATE}}-${{env.FILENAMEANDPATH}}.json
       - name: Upload artifate
         uses: actions/upload-artifact@v3
         with:
-          name: ${{env.MY_DATE}}-${{env.FILENAMEANDPATH}}.zip # name of artifact to create
-          path: ./test-1.json # name of existing file/dir to add to artiface                 
+          name: ${{env.MY_DATE}}-${{env.FILENAMEANDPATH}}.json # name of artifact to create
+          path: ${{env.MY_DATE}}-${{env.FILENAMEANDPATH}} # name of existing file/dir to add to artiface                 
       - name: Azure CLI script
         uses: azure/CLI@v1
         with:
           azcliversion: 2.30.0
           inlineScript: |
-            az storage blob upload --file ./test-1.json --container-name test --connection-string "${{ secrets.BLOB_STORE_CONN_STRING }}" 
+            az storage blob upload --file ${{env.MY_DATE}}-${{env.FILENAMEANDPATH}}.json --container-name test --connection-string "${{ secrets.BLOB_STORE_CONN_STRING }}" --metadata process=mongo --tags process=mongo testserver=abc
