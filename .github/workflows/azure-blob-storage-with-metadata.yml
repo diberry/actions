@@ -29,8 +29,6 @@ jobs:
       - name: Set date in env
         run: |
           echo "MY_DATE=$(date +"%FT%H%M")" >> $GITHUB_ENV  
-          json='{"commit_id": "b8f2b8b", "environment": "test", "tags_at_commit": "sometags", "project": "someproject", "current_date": "09/10/2014", "version": "someversion"}'
-          echo "$json" >> ${{env.MY_DATE}}-${{env.FILENAMEANDPATH}}.json
           ls -la
       - name: Upload artifate
         uses: actions/upload-artifact@v3
@@ -42,4 +40,4 @@ jobs:
         with:
           azcliversion: 2.30.0
           inlineScript: |
-            az storage blob upload --file ${{env.MY_DATE}}-${{env.FILENAMEANDPATH}} --container-name test --connection-string "${{ secrets.BLOB_STORE_CONN_STRING }}" --metadata process=mongo
+            az storage blob upload --data "hello" --container-name test --connection-string "${{ secrets.BLOB_STORE_CONN_STRING }}" --metadata process=mongo
