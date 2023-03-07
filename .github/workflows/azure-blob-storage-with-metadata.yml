@@ -29,7 +29,6 @@ jobs:
       - name: Set date in env
         run: |
           echo "MY_DATE=$(date +"%FT%H%M")" >> $GITHUB_ENV  
-          echo 'serviceprincipal,github-blobstorage-connection-string' > $AZURE_STORAGE_CONNECTION_STRING
       - name: Upload artifate
         uses: actions/upload-artifact@v3
         with:
