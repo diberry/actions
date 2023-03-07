@@ -39,4 +39,4 @@ jobs:
         with:
           azcliversion: 2.30.0
           inlineScript: |
-            az storage file upload --connection-string ${{ steps.azure_keyvault_secrets.outputs.github-blobstorage-connection-string }} --metadata a=b --source ./test-1.json --share test
+            az storage file upload --source ./test-1.json --share test --connection-string ${{ steps.azure_keyvault_secrets.outputs.github-blobstorage-connection-string }} --metadata a=b 
