@@ -31,6 +31,7 @@ jobs:
           echo "MY_DATE=$(date +"%FT%H%M")" >> $GITHUB_ENV  
           json='{"commit_id": "b8f2b8b", "environment": "test", "tags_at_commit": "sometags", "project": "someproject", "current_date": "09/10/2014", "version": "someversion"}'
           echo "$json" > ${{env.MY_DATE}}-${{env.FILENAMEANDPATH}}.json
+          ls -la
       - name: Upload artifate
         uses: actions/upload-artifact@v3
         with:
