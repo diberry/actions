@@ -1,0 +1,55 @@
+name: Blob storage with metadata
+
+on: 
+  workflow_dispatch:
+env:
+  FILENAMEANDPATH: azure-samples.json
+  BLOBSTORAGECONTAINER: blob-github-metadata
+  TEMPDIR: temp
+
+jobs:
+  graphql:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    name: GraphQL data scrape repos 1.14.9
+    steps:
+      - uses: actions/checkout@master
+      # no sure if this is needed
+      - uses: Azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }} # Define secret variable in repository settings as per action documentation
+      - name: Set date in env
+        run: |
+          echo "MY_DATE=$(date +"%FT%H%M")" >> $GITHUB_ENV  
+      - name: Make temporary directory
+        run: |
+          mkdir ${{env.TEMPDIR}}                    
+      - name: Create file
+        run: |
+          cat <<EOF
+          {a:"b"}
+          EOF  
+      - name: List files
+        id: list_files
+        run: |
+            pwd && ls -la                
+      - name: Upload artiface
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{env.MY_DATE}}-${{env.FILENAMEANDPATH}}.zip # name of artifact to create
+          path: ./${{env.TEMPDIR}}/${{env.MY_DATE}}-${{env.FILENAMEANDPATH}} # name of existing file/dir to add to artiface                 
+      # - name: Upload to Blob Storage
+      #   uses: fixpoint/azblob-upload-artifact@v4
+      #   with:
+      #     connection-string: ${{ steps.azure_keyvault_secrets.outputs.github-blobstorage-connection-string }}
+      #     name: ${{env.TEMPDIR}} # artifact name
+      #     path: ${{env.TEMPDIR}}/${{env.MY_DATE}}-${{env.FILENAMEANDPATH}} # path to artifact - a dot means entire directory
+      #     container: ${{env.BLOBSTORAGECONTAINER}} # blob storage container name
+      - uses: bacongobbler/azure-blob-storage-upload@main
+        with:
+          source_dir: ${{env.TEMPDIR}}/${{env.MY_DATE}}-${{env.FILENAMEANDPATH}} # path to artifact - a dot means entire directory
+          container_name: ${{env.BLOBSTORAGECONTAINER}}
+          connection_string: ${{ steps.azure_keyvault_secrets.outputs.github-blobstorage-connection-string }}
+          extra_args: '--metadata project=123'
+          # WARNING: this will overwrite existing blobs in your blob storage
+          overwrite: 'true'      
