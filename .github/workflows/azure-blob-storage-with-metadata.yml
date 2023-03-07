@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 env:
-  FILENAMEANDPATH: blob-upload-az-cli.json
+  FILENAMEANDPATH: blob-upload-az-cli-1.json
   BLOBSTORAGECONTAINER: test
 
 
@@ -41,4 +41,4 @@ jobs:
         with:
           azcliversion: 2.30.0
           inlineScript: |
-            az storage blob upload --file ${{env.MY_DATE}}-${{env.FILENAMEANDPATH}}.json --container-name test --connection-string "${{ secrets.BLOB_STORE_CONN_STRING }}" --metadata process=mongo --tags process=mongo testserver=abc
+            az storage blob upload --file ${{env.MY_DATE}}-${{env.FILENAMEANDPATH}} --container-name test --connection-string "${{ secrets.BLOB_STORE_CONN_STRING }}" --metadata process=mongo --tags process=mongo
