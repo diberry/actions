@@ -38,6 +38,5 @@ jobs:
       - name: Azure CLI script
         uses: azure/CLI@v1
         with:
-          azcliversion: 2.30.0
           inlineScript: |
             az storage blob upload --data "teststring" --container-name test -n "${{env.MY_DATE}}-${{env.FILENAMEANDPATH}}-blob" --connection-string "${{ secrets.BLOB_STORE_CONN_STRING }}" --metadata process=mongo
