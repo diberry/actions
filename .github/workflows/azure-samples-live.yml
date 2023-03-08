@@ -62,17 +62,10 @@ jobs:
         with:
           name: ${{env.MY_DATE}}-${{env.FILENAMEANDPATH}}.zip # name of artifact to create
           path: ./${{env.TEMPDIR}}/${{env.MY_DATE}}-${{env.FILENAMEANDPATH}} # name of existing file/dir to add to artiface                 
-      # - name: Upload to Blob Storage
-      #   uses: fixpoint/azblob-upload-artifact@v4
-      #   with:
-      #     connection-string: ${{ steps.azure_keyvault_secrets.outputs.github-blobstorage-connection-string }}
-      #     name: ${{env.TEMPDIR}} # artifact name
-      #     path: ${{env.TEMPDIR}}/${{env.MY_DATE}}-${{env.FILENAMEANDPATH}} # path to artifact - a dot means entire directory
-      #     container: ${{env.BLOBSTORAGECONTAINER}} # blob storage container name
-      - name: Azure CLI script
-        uses: azure/CLI@v1
+      - name: Upload to Blob Storage
+        uses: fixpoint/azblob-upload-artifact@v4
         with:
-          inlineScript: |
-            #az storage container create --name "${{env.BLOBSTORAGECONTAINER}}-${{env.MY_DATE}}" --connection-string "${{ secrets.BLOB_STORE_CONN_STRING }}" --public-access OFF
-            #az storage blob upload-batch --source "./temp/" --destination "${{env.BLOBSTORAGECONTAINER}}" --destination-path "${{env.MY_DATE}}-${{env.FILENAMEANDPATH}}"  --connection-string "${{ secrets.BLOB_STORE_CONN_STRING }}" --metadata process=mongo --overwrite 
-            az storage blob upload --file ./${{env.TEMPDIR}}/${{env.MY_DATE}}-${{env.FILENAMEANDPATH}} --container-name "${{ env.BLOBSTORAGECONTAINER }}" --name "./${{env.TEMPDIR}}/${{env.MY_DATE}}-${{env.FILENAMEANDPATH}}" --connection-string "${{ secrets.BLOB_STORE_CONN_STRING }}" --metadata actionDate={{$env.MY_DATE}} --tags actionDate={{$env.MY_DATE}} 
+          connection-string: ${{ steps.azure_keyvault_secrets.outputs.github-blobstorage-connection-string }}
+          name: ${{env.TEMPDIR}} # artifact name
+          path: ${{env.TEMPDIR}}/${{env.MY_DATE}}-${{env.FILENAMEANDPATH}} # path to artifact - a dot means entire directory
+          container: ${{env.BLOBSTORAGECONTAINER}} # blob storage container name
