@@ -8,7 +8,7 @@ on:
 
 env:
   ABC: 123
-
+  GH_TOKEN: ${{ github.token }}
 jobs:
   dosomething_job:
     runs-on: ubuntu-latest
