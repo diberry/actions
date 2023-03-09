@@ -1,0 +1,21 @@
+name: GitHub Workflow list
+
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types:
+      - happy-webhook-trigger
+
+env:
+  ABC: 123
+
+jobs:
+  dosomething_job:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    name: Debug
+    steps:
+      - uses: actions/checkout@master
+      - name: GitHub workflow list
+        run: |
+          gh workflow list --all
