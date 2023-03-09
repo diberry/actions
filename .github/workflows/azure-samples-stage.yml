@@ -41,7 +41,7 @@ jobs:
           query_type: 'org_repos_extended'
           save_to_file: 'true'
           save_to_file_name: ./${{env.TEMPDIR}}/${{env.MY_DATE}}-${{env.FILENAMEANDPATH}}
-          rate_limit_delay: 5000
+          rate_limit_delay: 1000
           max_page_size: 30
           max_items: -1 # all rows
       # DATA IS TOO LARGE - DON'T USE THIS
@@ -74,4 +74,4 @@ jobs:
           inlineScript: |
             #az storage container create --name "${{env.BLOBSTORAGECONTAINER}}-${{env.MY_DATE}}" --connection-string "${{ secrets.BLOB_STORE_CONN_STRING }}" --public-access OFF
             #az storage blob upload-batch --source "./temp/" --destination "${{env.BLOBSTORAGECONTAINER}}" --destination-path "${{env.MY_DATE}}-${{env.FILENAMEANDPATH}}"  --connection-string "${{ secrets.BLOB_STORE_CONN_STRING }}" --metadata process=mongo --overwrite 
-            az storage blob upload --file ./${{env.TEMPDIR}}/${{env.MY_DATE}}-${{env.FILENAMEANDPATH}} --container-name "${{ env.BLOBSTORAGECONTAINER }}" --name "./${{env.TEMPDIR}}/${{env.MY_DATE}}-${{env.FILENAMEANDPATH}}" --connection-string "${{ secrets.BLOB_STORE_CONN_STRING }}" --metadata actionDate={{$env.MY_DATE}} --tags actionDate={{$env.MY_DATE}} 
+            az storage blob upload --file ./${{env.TEMPDIR}}/${{env.MY_DATE}}-${{env.FILENAMEANDPATH}} --container-name "${{ env.BLOBSTORAGECONTAINER }}" --name "./${{env.TEMPDIR}}/${{env.MY_DATE}}-${{env.FILENAMEANDPATH}}" --connection-string --connection-string "${{ secrets.BLOB_STORE_CONN_STRING }}" --metadata actionDate={{$env.MY_DATE}} --tags actionDate={{$env.MY_DATE}} 
