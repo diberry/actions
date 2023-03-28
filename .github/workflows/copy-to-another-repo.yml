@@ -1,0 +1,60 @@
+name: Test - push file to 2nd repo
+
+on: 
+  workflow_dispatch:
+env:
+  FILENAMEANDPATH: file-from-github-action.json
+  TEMPDIR: temp
+  SECONDREPO: dfberry/actions-test-2
+
+jobs:
+  graphql:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    name: Checkout and commit change
+    # outputs:
+    #   output1: ${{ steps.make-file.data }}    
+    steps:
+      - uses: actions/checkout@3 # checkout this repo
+        with:
+          ref: 'main'
+          token: ${{ github.token }}
+      - name: Set date in env
+        run: |
+          echo "MY_DATE=$(date +"%FT%H%M")" >> $GITHUB_ENV  
+          mkdir -p ${{env.TEMPDIR}}
+          # ls -la 
+      # - name: Make a new file # similuate pipeline doing something then creating output file
+      #   id: make-file
+      #   run: |
+      #     echo "This is a new file" > ${{env.TEMPDIR}}/${{env.MY_DATE}}-${{env.FILENAMEANDPATH}}
+      #     echo "::set-output name=data::$(cat ${{env.TEMPDIR}}/${{env.MY_DATE}}-${{env.FILENAMEANDPATH}})"
+      #     pwd && ls -la
+      - name: Checkout # checkout the other repo as submodule of this repo
+        uses: actions/checkout@v3
+        with:
+            ref: 'main'
+            repository: ${{env.SECONDREPO}}
+            token: ${{ github.token }}
+            path: './${{env.SECONDREPO}}'
+      - name: commit file to another repo
+        run: |
+            cd ./${{env.SECONDREPO}}
+            date > generated.txt
+            git config user.name github-actions
+            git config user.email github-actions@github.com
+            git add .
+            git commit -m "generated ${{env.MY_DATE}}"
+            git push
+            ls -la
+      # - name: List files
+      #   id: list_files
+      #   run: |
+      #       pwd && ls -la 
+      # - name: Print env
+      #   run: printenv     
+      # - name: Upload artiface
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: ${{env.TEMPDIR}}/${{env.FILENAMEANDPATH}} # name of artifact to create
+      #     path: ./${{env.TEMPDIR}}/${{env.MY_DATE}}-${{env.FILENAMEANDPATH}} # name of existing file/dir to add to artiface                 
