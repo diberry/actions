@@ -15,10 +15,16 @@ jobs:
     # outputs:
     #   output1: ${{ steps.make-file.data }}    
     steps:
-      - uses: actions/checkout@master # checkout this repo
+      - name: Checkout this repo
+        uses: actions/checkout@master # checkout this repo
         with:
           ref: 'main'
           token: ${{ github.token }}
+      - name: Login to Azure
+        uses: Azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }} # Define secret variable in repository settings as per action documentation
+  
       - name: Get Key Vault Secret
         uses: Azure/get-keyvault-secrets@v1
         with:
