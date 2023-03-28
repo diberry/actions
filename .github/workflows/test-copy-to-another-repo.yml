@@ -15,7 +15,7 @@ jobs:
     # outputs:
     #   output1: ${{ steps.make-file.data }}    
     steps:
-      - uses: actions/checkout@3 # checkout this repo
+      - uses: actions/checkout@master # checkout this repo
         with:
           ref: 'main'
           token: ${{ github.token }}
@@ -31,7 +31,7 @@ jobs:
       #     echo "::set-output name=data::$(cat ${{env.TEMPDIR}}/${{env.MY_DATE}}-${{env.FILENAMEANDPATH}})"
       #     pwd && ls -la
       - name: Checkout # checkout the other repo as submodule of this repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@master
         with:
             ref: 'main'
             repository: ${{env.SECONDREPO}}
