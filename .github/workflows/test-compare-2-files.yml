@@ -1,0 +1,21 @@
+name: Test - compare 2 files
+
+on: 
+  workflow_dispatch:
+
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    name: Compare 2 files
+    # outputs:
+    #   output1: ${{ steps.make-file.data }}    
+    steps:
+      - name: create files
+        run: |
+          echo "hello" > hello.txt
+          echo "hello" > hello2.txt
+      - name: Compare files # 0 (files are same) 1 (files are different)
+        run: |
+          echo "COMPARE=(cmp -s hello.txt hello2.txt)"
+          echo "$COMPARE"
