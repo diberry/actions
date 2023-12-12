@@ -21,7 +21,7 @@ jobs:
 
     - name: Get date - last month
       id: lastmonthdate
-      run: echo "::set-output name=date::$(date +'%y%m%d' -d 'last month')"
+      run: echo "::set-output name=lastmonthdate::$(date +'%y%m%d' -d 'last month')"
     - name: Output date - last month
       run: |
         echo "${{ steps.date.outputs.lastmonthdate }}"
