@@ -11,9 +11,17 @@ jobs:
   date:
     runs-on: ubuntu-latest
     steps:
+
     - name: Get date - this month
       id: date
       run: echo "::set-output name=date::$(date +'%y%m%d')"
     - name: Output date - this month
       run: |
-        echo "${{ steps.date.outputs.date }}""
+        echo "${{ steps.date.outputs.date }}"
+
+    - name: Get date - last month
+      id: lastmonthdate
+      run: echo "::set-output name=date::$(date +'%m' -d 'last month' +'%y%m%d')"
+    - name: Output date - last month
+      run: |
+        echo "${{ steps.date.outputs.lastmonthdate }}"
