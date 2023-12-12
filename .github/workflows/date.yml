@@ -1,0 +1,16 @@
+name: Date output format
+
+on: 
+  workflow_dispatch:
+
+env: 
+  FILENAME: whoami.json
+  MYDATETIME: $(date +"%FT%H%M")
+
+jobs:
+  date:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Get date - this month
+      id: date
+      run: echo "::set-output name=date::$(date +'%y%m%d')"
