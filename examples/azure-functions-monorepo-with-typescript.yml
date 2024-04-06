@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/azure/functions-action
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy Node.js project to Azure Function App - signalr-3
+name: Build and deploy Node.js project to Azure Function App - signalr-4
 
 on:
   push:
@@ -10,9 +10,10 @@ on:
   workflow_dispatch:
 
 env:
-  AZURE_FUNCTIONAPP_SERVER_PACKAGE_PATH: 'server-end' # set this to the path to your web app project, inside your monorepo
-  ZIP_PACKAGE_PATH: '.' # root of monorepo and final hosting platform
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: '.' # set this to the path to your web app project, defaults to the repository root
   NODE_VERSION: '20.x' # set this to the node version to use (supports 8.x, 10.x, 12.x)
+  PACKAGE_PATH: 'server-end' # set this to the path to your web app project, defaults to the repository root
+
 
 jobs:
   build:
@@ -26,16 +27,21 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - name: 'Build and zip package in subdir of monorepo'
+      - name: 'Resolve Project Dependencies Using Npm'
         shell: bash
         run: |
-          pushd './${{ env.ZIP_PACKAGE_PATH }}/${{ env.AZURE_FUNCTIONAPP_SERVER_PACKAGE_PATH}}'
+          pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/${{ env.PACKAGE_PATH}}'
           npm install
           npm run build --if-present
           npm run test --if-present
-          zip -r ../release.zip .
           popd
-        
+
+      - name: Zip artifact for deployment
+        run: |
+          pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/${{ env.PACKAGE_PATH}}'
+          zip ../release.zip * -r
+          popd
+
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
@@ -63,16 +69,16 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v1
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_7953CE71DA404164BBBC35F07ECDD4FD }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_853880B11FFD4142A37B35F0DBD5C55D }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_3B05BF95EF5440AF941C3AECF9FF10CD }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_E7A65473EF4546DBB1D93DF8AE29FC31 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_0BB3F3AC0A74458986D97192EE8BBBDD }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_703349CE3D384F9ABB7788B28EC4B7BE }}
 
-      # Deploy package to root of hosting platform
       - name: 'Run Azure Functions Action'
         uses: Azure/functions-action@v1
         id: fa
         with:
-          app-name: 'signalr-3'
+          app-name: 'signalr-4'
           slot-name: 'Production'
-          package: ${{ env.ZIP_PACKAGE_PATH }}
+          package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
+          
           
