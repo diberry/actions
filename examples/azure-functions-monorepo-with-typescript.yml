@@ -36,6 +36,10 @@ jobs:
           npm run test --if-present
           popd
 
+      # Copy source
+      # Azure Functions performs the build using these app settings
+      # ENABLE_ORYX_BUILD=true
+      # SCM_DO_BUILD_DURING_DEPLOYMENT=true
       - name: Zip artifact for deployment
         run: |
           pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/${{ env.PACKAGE_PATH}}'
