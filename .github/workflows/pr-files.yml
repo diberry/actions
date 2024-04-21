@@ -10,16 +10,6 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Check Not Allowed files
-      id: check_not_allowed
-      run: |
-        git diff --name-only --diff-filter=A origin/main | while IFS= read -r file; do
-          if grep -Fxq "$file" ./.github/policies/not-allowed-files.txt; then
-            echo "File $file is not allowed"
-            exit 1
-          fi
-        done
-
     - name: Create failure status check if necessary
       if: ${{ failure() }}
       run: |
@@ -31,3 +21,19 @@ jobs:
           "context": "CI"
         }' \
         "https://api.github.com/repos/${{ github.repository }}/statuses/${{ github.sha }}"
+      continue-on-error: true
+
+    - name: Fetch main branch
+      run: git fetch origin main:main
+
+    - name: Check Not Allowed files
+      id: check_not_allowed
+      run: |
+        git diff --name-only --diff-filter=A origin/main | while IFS= read -r file; do
+          if grep -Fxq "$file" ./.github/policies/not-allowed-files.txt; then
+            echo "File $file is not allowed"
+            exit 1
+          fi
+        done
+      continue-on-error: true
+
