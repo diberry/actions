@@ -13,7 +13,7 @@ jobs:
     - name: Check Not Allowed files
       run: |
         git diff --name-only --diff-filter=A origin/main | while IFS= read -r file; do
-          if grep -Fxq "$file" ./.github/policies/notAllowedFiles.txt; then
+          if grep -Fxq "$file" ./.github/policies/not-allowed-files.txt; then
             echo "File $file is not allowed"
             exit 1
           fi
@@ -26,4 +26,4 @@ jobs:
             echo "File $file has been deleted"
             exit 1
           fi
-        done < ./.github/policies/requiredFiles.txt
+        done < ./.github/policies/required-files.txt
