@@ -1,0 +1,16 @@
+name: "Close stale issues and PRs"
+on:
+  schedule:
+    - cron: "0 0 * * *"
+
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/stale@v4
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          days-before-stale: 30
+          days-before-close: 5
+          stale-issue-message: 'This issue is stale because it has been open 30 days with no activity. It will be closed in 5 days unless there is further activity.'
+          stale-pr-message: 'This PR is stale because it has been open 30 days with no activity. It will be closed in 5 days unless there is further activity.'
