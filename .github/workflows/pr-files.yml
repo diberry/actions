@@ -1,0 +1,29 @@
+name: PR file validation
+
+on: [push, pull_request]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Check Not Allowed files
+      run: |
+        git diff --name-only --diff-filter=A origin/main | while IFS= read -r file; do
+          if grep -Fxq "$file" ./.github/policies/notAllowedFiles.txt; then
+            echo "File $file is not allowed"
+            exit 1
+          fi
+        done
+
+    - name: Check Required files
+      run: |
+        while IFS= read -r file; do
+          if [ ! -f "$file" ]; then
+            echo "File $file has been deleted"
+            exit 1
+          fi
+        done < ./.github/policies/requiredFiles.txt
