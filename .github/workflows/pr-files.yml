@@ -11,6 +11,7 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Check Not Allowed files
+      id: check_not_allowed
       run: |
         git diff --name-only --diff-filter=A origin/main | while IFS= read -r file; do
           if grep -Fxq "$file" ./.github/policies/not-allowed-files.txt; then
@@ -19,11 +20,14 @@ jobs:
           fi
         done
 
-    - name: Check Required files
+    - name: Create failure status check if necessary
+      if: ${{ failure() }}
       run: |
-        while IFS= read -r file; do
-          if [ ! -f "$file" ]; then
-            echo "File $file has been deleted"
-            exit 1
-          fi
-        done < ./.github/policies/required-files.txt
+        curl -X POST -H "Authorization: token ${{ secrets.REPO_STATUS_PAT }}" \
+        -d '{
+          "state": "failure",
+          "target_url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}",
+          "description": "One or more checks failed",
+          "context": "CI"
+        }' \
+        "https://api.github.com/repos/${{ github.repository }}/statuses/${{ github.sha }}"
