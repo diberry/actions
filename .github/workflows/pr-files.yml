@@ -13,6 +13,18 @@ jobs:
     - name: Fetch main branch
       run: git fetch origin main:main
 
+    - name: Check Required files
+      id: check_required
+      run: |
+        while IFS= read -r file; do
+          if [ ! -f "$file" ]; then
+            echo "File $file is not allowed to be deleted"
+            exit 1
+          fi
+        done < ./.github/policies/required-files.txt
+      continue-on-error: true
+
+
     - name: Check Not Allowed files
       id: check_not_allowed
       run: |
@@ -22,4 +34,5 @@ jobs:
             exit 1
           fi
         done
+      continue-on-error: true
 
