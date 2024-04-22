@@ -10,19 +10,6 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Create failure status check if necessary
-      if: ${{ failure() }}
-      run: |
-        curl -X POST -H "Authorization: token ${{ secrets.REPO_STATUS_PAT }}" \
-        -d '{
-          "state": "failure",
-          "target_url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}",
-          "description": "One or more checks failed",
-          "context": "CI"
-        }' \
-        "https://api.github.com/repos/${{ github.repository }}/statuses/${{ github.sha }}"
-      continue-on-error: true
-
     - name: Fetch main branch
       run: git fetch origin main:main
 
@@ -35,5 +22,4 @@ jobs:
             exit 1
           fi
         done
-      continue-on-error: true
 
