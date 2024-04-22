@@ -1,0 +1,35 @@
+name: Required files
+
+on: [push, pull_request]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Fetch main branch
+      run: git fetch origin main:main
+
+    - name: Check Required files
+      id: check_required
+      run: |
+        errors=""
+        while IFS= read -r file; do
+          file_lower=$(echo "$file" | tr '[:upper:]' '[:lower:]')
+          while IFS= read -r required_file; do
+            required_file_lower=$(echo "$required_file" | tr '[:upper:]' '[:lower:]')
+            if [ "$file_lower" = "$required_file_lower" ]; then
+              errors="${errors}File $file is not allowed to be deleted\n"
+            fi
+          done < <(tr '[:upper:]' '[:lower:]' < ./.github/policies/required-files.txt)
+        done
+        if [ -n "$errors" ]; then
+          echo -e "$errors"
+          exit 1
+        fi
+
+
+
