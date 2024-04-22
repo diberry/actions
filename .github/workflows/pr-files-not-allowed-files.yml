@@ -1,4 +1,4 @@
-name: Don't add banned files
+name: Banned files
 
 on: [push, pull_request]
 
@@ -17,7 +17,7 @@ jobs:
       id: check_not_allowed
       run: |
         git diff --name-only --diff-filter=A origin/main | while IFS= read -r file; do
-          if grep -Fxq "$file" ./.github/policies/not-allowed-files.txt; then
+          if grep -Fxq "$file" ./.github/policies/banned-files.txt; then
             echo "File $file is not allowed with this name and path"
             exit 1
           fi

@@ -1,4 +1,4 @@
-name: Don't delete required files
+name: Required files
 
 on: [push, pull_request]
 
@@ -17,11 +17,15 @@ jobs:
       id: check_required
       run: |
         while IFS= read -r file; do
-          if [ ! -f "$file" ]; then
-            echo "File $file is not allowed to be deleted"
-            exit 1
-          fi
-        done < ./.github/policies/required-files.txt
+          file_lower=$(echo "$file" | tr '[:upper:]' '[:lower:]')
+          while IFS= read -r required_file; do
+            required_file_lower=$(echo "$required_file" | tr '[:upper:]' '[:lower:]')
+            if [ "$file_lower" = "$required_file_lower" ]; then
+              echo "File $file is not allowed to be deleted"
+              exit 1
+            fi
+          done < <(tr '[:upper:]' '[:lower:]' < ./.github/policies/required-files.txt)
+        done
 
 
 
