@@ -1,0 +1,27 @@
+name: Don't delete required files
+
+on: [push, pull_request]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Fetch main branch
+      run: git fetch origin main:main
+
+    - name: Check Required files
+      id: check_required
+      run: |
+        while IFS= read -r file; do
+          if [ ! -f "$file" ]; then
+            echo "File $file is not allowed to be deleted"
+            exit 1
+          fi
+        done < ./.github/policies/required-files.txt
+
+
+
