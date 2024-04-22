@@ -13,13 +13,15 @@ jobs:
     - name: Fetch main branch
       run: git fetch origin main:main
 
-    - name: Check Not Allowed files
-      id: check_not_allowed
-      run: |
-        git diff --name-only --diff-filter=A origin/main | while IFS= read -r file; do
-          if grep -Fxq "$file" ./.github/policies/banned-files.txt; then
-            echo "File $file is not allowed with this name and path"
-            exit 1
-          fi
-        done
+  run: |
+    errors=""
+    git diff --name-only --diff-filter=A origin/main | while IFS= read -r file; do
+      if grep -Fxq "$file" ./.github/policies/banned-files.txt; then
+        errors="${errors}File $file is not allowed with this name and path\n"
+      fi
+    done
+    if [ -n "$errors" ]; then
+      echo -e "$errors"
+      exit 1
+    fi
 
